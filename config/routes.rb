@@ -1,4 +1,6 @@
 Rails.application.routes.draw do
+  get 'users/new'
+
   root 'static_pages#home'
 
   # tutorial: can also rename it using 'as'
