@@ -12,5 +12,11 @@ class User < ApplicationRecord
                         # if we use "uniqueness: true"
                         # it will be case sensitive, while it shouldn't be for email
                         uniqueness: { case_sensitive: false }
+    
+    # for more: https://goo.gl/wLvfto
+    has_secure_password 
+
+    validates :password, presence: true, # ensures non-empty
+                         length: { minimum: 6 }
 end
     
