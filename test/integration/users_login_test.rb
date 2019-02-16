@@ -10,7 +10,7 @@ class UsersLoginTest < ActionDispatch::IntegrationTest
         get login_path
         assert_template 'sessions/new'
         # should have non-logged-in user links
-        assert_nonlogin_user_links
+        assert_is_nonlogin_user_links
         # submit invalid information
         post login_path, params: { session: { email: "", password: "" }}
         # should appear error message on login page
@@ -20,30 +20,41 @@ class UsersLoginTest < ActionDispatch::IntegrationTest
         get root_path
         assert flash.empty?
         # should have non-logged-in user links
-        assert_nonlogin_user_links
+        assert_is_nonlogin_user_links
     end
 
-    test "login with valid information" do
+    test "login with valid information followed by a logout" do
         get login_path
         assert_template 'sessions/new'
         # should have non-logged-in user links
-        assert_nonlogin_user_links
-        # submit valid information
+        assert_is_nonlogin_user_links
+        
+        # log in with valid information
         post login_path, params: { session: {   email: @user.email, 
                                                 password: "password" }}
         # should NOT appear error message before redirect
         assert flash.empty?
+        
         # should redirect to user's show page
         assert_redirected_to @user
         follow_redirect!
         assert_template 'users/show'
         # should NOT appear error message on show page
         assert flash.empty?
-       # should have logged-in user links
-        assert_login_user_links
+        # should have logged-in user links
+        assert_is_login_user_links
+
+        # then, log out!
+        delete logout_path
+        assert_not logged_in?
+        # redirect
+        assert_redirected_to root_path
+        follow_redirect!
+        assert_is_nonlogin_user_links
     end
 
-    def assert_login_user_links
+
+    def assert_is_login_user_links
         # should NOT have non-logged-in user paths
         assert_select "a[href=?]", login_path, count: 0
         # should have logged-in user paths
@@ -52,7 +63,7 @@ class UsersLoginTest < ActionDispatch::IntegrationTest
         assert_select "a[href=?]", logout_path
     end
 
-    def assert_nonlogin_user_links
+    def assert_is_nonlogin_user_links
         # should have non-logged-in user paths
         assert_select "a[href=?]", login_path
         # should NOT have logged-in user paths
