@@ -20,6 +20,8 @@ class UsersSignupTest < ActionDispatch::IntegrationTest
         assert_select "div.alert-success", text: "Welcome to the Sample App"
         assert_select "section.user_info h1 img[class=gravatar]"
         assert_select "section.user_info h1", text: "Test User"
+        # assert it's logged in by default
+        assert logged_in?
     end
 
 
