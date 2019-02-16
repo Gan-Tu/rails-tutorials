@@ -9,4 +9,15 @@ module SessionsHelper
         # using the cookies method
         session[:user_id] = user.id
     end
+
+    # Return the current logged-in user (if any)
+    def current_user
+        if session[:user_id]
+            # the method 'find_by' return nil if 'id' doesn't exist, in contrast
+            # to the method 'find', which raises an exception
+            # we don't want to repeatedly fetch from database, so we save it
+            # as a instance variable @current_user
+           return @current_user ||= User.find_by(id: session[:user_id])
+        end
+    end
 end
