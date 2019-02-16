@@ -14,6 +14,9 @@ class User < ApplicationRecord
                         uniqueness: { case_sensitive: false }
     
     # for more: https://goo.gl/wLvfto
+    # - automatically add 'password_confirmation', 'authenticate' method
+    # - Adds methods to set and authenticate against a BCrypt password. T
+    # his mechanism requires you to have a password_digest attribute.
     has_secure_password 
 
     validates :password, presence: true, # ensures non-empty
