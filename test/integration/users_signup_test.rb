@@ -7,17 +7,30 @@ class UsersSignupTest < ActionDispatch::IntegrationTest
         assert_select 'form[action="/signup"]'
     end
 
+    test "valid signup information" do
+        get signup_path
+        # should create user without error
+        assert_difference 'User.count' do
+            post_to_signup(name: "Test User")
+        end
+        follow_redirect!
+        # show the new user page with a flash and correct information
+        assert_template 'users/show'
+        assert_not flash.empty?
+        assert_select "div.alert-success", text: "Welcome to the Sample App"
+        assert_select "section.user_info h1 img[class=gravatar]"
+        assert_select "section.user_info h1", text: "Test User"
+    end
+
 
     test "invalid signup information" do
         get signup_path
         assert_no_difference 'User.count' do 
-          post users_path, params: { user: { name:  "",
-                                             email: "user@invalid",
-                                             password:              "foo",
-                                             password_confirmation: "bar" } }
+          post_to_signup(name: "")
         end
         assert_template 'users/new'
     end
+
 
     test "missing signup error information upon failure" do
         get signup_path
