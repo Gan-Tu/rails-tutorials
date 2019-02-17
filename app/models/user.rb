@@ -43,6 +43,7 @@ class User < ApplicationRecord
     end
 
     # Returns true if the given token matches the remember_digest
+    # Returns false if user digest is nil (meaning no persistent login enabled)
     def authenticated?(remember_token)
         # built-in for checking remember_digest == digest(remember_token)
         return !remember_digest.nil? && 
