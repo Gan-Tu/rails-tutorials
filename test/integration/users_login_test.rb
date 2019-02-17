@@ -21,6 +21,7 @@ class UsersLoginTest < ActionDispatch::IntegrationTest
         assert flash.empty?
         # should have non-logged-in user links
         assert_is_nonlogin_user_links
+        assert_not is_logged_in?
     end
 
     test "login with valid information followed by a logout" do
@@ -43,10 +44,12 @@ class UsersLoginTest < ActionDispatch::IntegrationTest
         assert flash.empty?
         # should have logged-in user links
         assert_is_login_user_links
-
+        assert is_logged_in?
+        
         # then, log out!
         delete logout_path
-        assert_not logged_in?
+        assert_not is_logged_in? 
+
         # redirect
         assert_redirected_to root_path
         follow_redirect!
@@ -70,5 +73,19 @@ class UsersLoginTest < ActionDispatch::IntegrationTest
         assert_select "a[href=?]", logout_path, count: 0
         assert_select "a[href=?]", user_path(@user), count: 0
         assert_select "a[href=?]", logout_path, count: 0
+    end
+
+    test "login with remembering" do
+        log_in_as(@user, remember_me: '1')
+        assert_not_empty cookies[:remember_token]
+        assert_equal cookies[:remember_token], assigns(:user).remember_token
+    end
+
+    test "login without remembering" do
+        # Log in to set the cookie.
+        log_in_as(@user, remember_me: '1')
+        # Log in again and verify that the cookie is deleted.
+        log_in_as(@user, remember_me: '0')
+        assert_empty cookies[:remember_token]
     end
 end
