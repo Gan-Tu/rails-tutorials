@@ -1,5 +1,7 @@
 # Ruby on Rails Tutorial sample application
 
+[![CircleCI](https://circleci.com/gh/Michael-Tu/rails-tutorials/tree/master.svg?style=svg)](https://circleci.com/gh/Michael-Tu/rails-tutorials/tree/master)
+
 This is the sample application I developed while reading the 
 book [*Ruby on Rails Tutorial:
 Learn Web Development with Rails*](https://www.railstutorial.org/)
