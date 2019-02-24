@@ -10,11 +10,16 @@ jobs:
       - image: circleci/ruby:2.3.8-node-browsers
         environment:
           BUNDLER_VERSION: 2.0.1
+          RAILS_ENV: test
 
       # Specify service dependencies here if necessary
       # CircleCI maintains a library of pre-built images
       # documented at https://circleci.com/docs/2.0/circleci-images/
-      # - image: circleci/postgres:9.4
+      - image: circleci/postgres:9.5-alpine  # service image
+        environment:
+          POSTGRES_USER: ralis-tutorial-ruby
+          POSTGRES_DB: rails_tutorial
+          POSTGRES_PASSWORD: ""
 
     working_directory: ~/rails-tutorials
 
@@ -24,30 +29,35 @@ jobs:
       # Download and cache dependencies
       - restore_cache:
           keys:
-            - v1-dependencies-{{ checksum "Gemfile.lock" }}
+            - rails-tutorial-v1-dependencies-{{ checksum "Gemfile.lock" }}
             # fallback to using the latest cache if no exact match is found
-            - v1-dependencies-
+            - rails-tutorial-v1-dependencies-
 
+      # install dependencies
       - run:
           name: install dependencies
           command: |
             gem update bundler
             bundle install --jobs=4 --retry=3 --path vendor/bundle
 
+      # Cache Dependencies
       - save_cache:
           paths:
             - ./vendor/bundle
-          key: v1-dependencies-{{ checksum "Gemfile.lock" }}
+          key: rails-tutorial-v1-dependencies-{{ checksum "Gemfile.lock" }}
 
       # Database setup
-      - run: bundle exec rake db:create
-      - run: bundle exec rake db:schema:load
+      - run: 
+          name: setup the database
+          command: |
+            bundle exec rake db:create
+            bundle exec rake db:schema:load
 
       # run tests!
       - run:
           name: run tests
           command: |
-            rails test
+            bundle exec rake
 
       # collect reports
       - store_test_results:
