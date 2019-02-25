@@ -49,7 +49,6 @@ jobs:
       - run:
           name: run tests
           command: bundle exec rake test
-          when: always
 
       # collect reports
       - store_test_results:
