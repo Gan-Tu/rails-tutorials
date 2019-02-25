@@ -1,7 +1,7 @@
 # Ruby on Rails Tutorial sample application
 
 [![Build Status](https://travis-ci.org/Michael-Tu/rails-tutorials.svg?branch=master)](https://travis-ci.org/Michael-Tu/rails-tutorials)
-
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![CircleCI](https://circleci.com/gh/Michael-Tu/rails-tutorials/tree/master.svg?style=svg)](https://circleci.com/gh/Michael-Tu/rails-tutorials/tree/master)
 
 This is the sample application I developed while reading the 
