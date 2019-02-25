@@ -7,8 +7,8 @@ require 'rake/testtask'
 Rails.application.load_tasks
 
 Rake::TestTask.new do |t|
-  t.pattern = "test/test_*.rb"
-  t.warning = false
+  t.test_files =  FileList['test/*_test.rb']
+  t.warning = true
 end
 
 task :default => :test

@@ -1,4 +1,5 @@
 language: ruby
+cache: bundler
 rvm:
  - 2.3.8
 before_install: 
