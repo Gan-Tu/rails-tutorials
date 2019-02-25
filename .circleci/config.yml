@@ -11,14 +11,6 @@ jobs:
         environment:
           BUNDLER_VERSION: 2.0.1
           RAILS_ENV: test
-          PGHOST: 127.0.0.1
-          PGUSER: rails_tutorial_demo
-
-      # Service container image available at `host: localhost`
-      - image: circleci/postgres:9.5-alpine  # service image
-        environment:
-          POSTGRES_USER: rails_tutorial_demo
-          POSTGRES_DB: rails_tutorial
 
     working_directory: ~/rails-tutorials
 
@@ -45,10 +37,6 @@ jobs:
             - ./vendor/bundle
           key: rails-tutorial-v1-dependencies-{{ checksum "Gemfile.lock" }}
 
-      # Database setup
-      - run:
-          name: Wait for DB to setup
-          command: dockerize -wait tcp://localhost:5432 -timeout 1m
 
       # Database setup
       - run: 
