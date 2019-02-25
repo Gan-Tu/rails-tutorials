@@ -11,15 +11,14 @@ jobs:
         environment:
           BUNDLER_VERSION: 2.0.1
           RAILS_ENV: test
+          PGHOST: 127.0.0.1
+          PGUSER: rails_tutorial_demo
 
-      # Specify service dependencies here if necessary
-      # CircleCI maintains a library of pre-built images
-      # documented at https://circleci.com/docs/2.0/circleci-images/
+      # Service container image available at `host: localhost`
       - image: circleci/postgres:9.5-alpine  # service image
         environment:
-          POSTGRES_USER: ralis-tutorial-ruby
+          POSTGRES_USER: rails_tutorial_demo
           POSTGRES_DB: rails_tutorial
-          POSTGRES_PASSWORD: ""
 
     working_directory: ~/rails-tutorials
 
