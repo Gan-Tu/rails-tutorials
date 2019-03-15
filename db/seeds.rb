@@ -10,14 +10,18 @@
 User.create!(name:  "Gan Tu",
              email: "example@tugan.me",
              password:              "970329",
-             password_confirmation: "970329")
+             password_confirmation: "970329",
+             admin: true)
 
 
+# create example rails user
 User.create!(name:  "Example User",
              email: "example@railstutorial.org",
              password:              "foobar",
-             password_confirmation: "foobar")
+             password_confirmation: "foobar",
+             admin: true)
 
+# create more dummy users
 99.times do |n|
   name  = Faker::Name.name
   email = "example-#{n+1}@railstutorial.org"
