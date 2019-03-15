@@ -1,7 +1,11 @@
 source 'https://rubygems.org'
 
 gem 'rails',        '5.1.6'
-gem 'bcrypt',         '3.1.12'
+gem 'bcrypt',       '3.1.12'
+# normally, we will restrict "faker" to development
+# but in our case, we want to seed fake users for our sample app
+# even in production
+gem 'faker',        '1.7.3'
 gem 'puma',         '3.9.1'
 gem 'sass-rails',   '5.0.6'
 gem 'uglifier',     '3.2.0'
