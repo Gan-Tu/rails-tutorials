@@ -20,11 +20,11 @@ class UsersEditTest < ActionDispatch::IntegrationTest
     assert_template 'users/edit'
   end
 
-  test "successful edit" do
-    log_in_as(@user)
-
+  test "successful edit with friendly forwarding" do
     get edit_user_path(@user)
-    assert_template 'users/edit'
+    log_in_as(@user)
+    assert_redirected_to edit_user_url(@user)
+    
     name  = "Foo Bar"
     email = "foo@bar.com"
     patch user_path(@user), params: { user: { name:  name,
@@ -67,6 +67,22 @@ class UsersEditTest < ActionDispatch::IntegrationTest
                                               email: @user.email } }
     assert flash.empty?
     assert_redirected_to root_url
+  end
+
+  test "should have friendly forwarding after logging in" do
+    get edit_user_path(@user)
+    # should fail and redirect to login
+    assert_not flash.empty?
+    assert_redirected_to login_url
+    follow_redirect!
+    # forwarding url should be set correctly
+    assert_not_nil session[:forwarding_url]
+    assert_includes session[:forwarding_url], edit_user_path(@user)
+    # should have friendly redirect
+    log_in_as(@user)
+    assert_redirected_to edit_user_path(@user)
+    # should clear the forwarding_url
+    assert_nil session[:forwarding_url]
   end
 
 end
