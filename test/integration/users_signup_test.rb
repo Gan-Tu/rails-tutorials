@@ -69,7 +69,7 @@ class UsersSignupTest < ActionDispatch::IntegrationTest
 
         # password and confirmation must match
         post_to_signup(password: "password", password_confirmation: "123456")
-        assert_field_error("Confirmation", 
+        assert_field_error("Password confirmation", 
             "Password confirmation doesn't match Password")
 
     end
