@@ -62,7 +62,7 @@ class UsersControllerTest < ActionDispatch::IntegrationTest
       end
 
     test "should not allow the admin attribute to be edited via the web" do
-        # cannot set admin
+        # login as non-admin and attempt to change it to admin
         log_in_as(@other_user)
         assert_not @other_user.admin?
         patch user_path(@other_user), params: {
@@ -70,7 +70,7 @@ class UsersControllerTest < ActionDispatch::IntegrationTest
                                                 password_confirmation: "password",
                                                 admin: true } }
         assert_not @other_user.admin?
-        # cannot unset admin
+        # login as admin and attempt to change it to non-admin
         log_in_as(@user)
         assert @user.admin?
         patch user_path(@user), params: {
