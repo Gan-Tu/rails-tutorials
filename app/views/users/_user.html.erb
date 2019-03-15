@@ -2,8 +2,8 @@
   <%= gravatar_for user, size: 50 %>
   <%= link_to user.name, user %>
   <!-- We allow admins to delete users -->
-  <% if current_user.admin? %>
+  <% if current_user.admin? && user != current_user %>
     | <%= link_to "delete", user, method: :delete,
-                                  data: { confirm: "You sure?" } %>
+                                  data: { confirm: "Do you want to delete: #{user.name.upcase}?" } %>
   <% end %>
 </li>

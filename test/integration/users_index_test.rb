@@ -25,7 +25,7 @@ class UsersIndexTest < ActionDispatch::IntegrationTest
             assert_select 'a[href=?]', user_path(user), text: user.name
             if user == @admin
                 # cannot delete oneself
-                assert_select 'a[href=?]', user_path(user), count: 0
+                assert_select 'a[href=?][data-method=delete]', user_path(user), count: 0
             else
                 assert_select 'a[href=?]', user_path(user), text: 'delete'
             end
