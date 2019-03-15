@@ -18,11 +18,15 @@ class User < ApplicationRecord
     # for more: https://goo.gl/wLvfto
     # - automatically add 'password_confirmation', 'authenticate' method
     # - Adds methods to set and authenticate against a BCrypt password. T
-    # his mechanism requires you to have a password_digest attribute.
+    # his mechanism requires you to have a password_digest attribute
+    # - Validations for presence of password on create, confirmation of 
+    # password (using a password_confirmation attribute) are 
+    # automatically added. 
     has_secure_password 
 
     validates :password, presence: true, # ensures non-empty
-                         length: { minimum: 6 }
+                         length: { minimum: 6 },
+                         allow_nil: true
 
     # Return the hash digest of the given string
     def User.digest(string)

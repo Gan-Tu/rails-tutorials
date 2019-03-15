@@ -61,6 +61,8 @@ class UsersSignupTest < ActionDispatch::IntegrationTest
         # password must not be blank
         post_to_signup(password: " ")
         assert_field_error("Password", "Password can't be blank")
+        post_to_signup(password: nil)
+        assert_field_error("Password", "Password can't be blank")
 
         # password has a length limit, or error message should appear
         post_to_signup(password: "1"*5)
