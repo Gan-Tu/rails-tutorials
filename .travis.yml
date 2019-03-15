@@ -14,6 +14,10 @@ script:
 deploy:
   provider: heroku
   app: rails-tutorial-sample-app-gan
-  run: "rake db:migrate"
+  run: 
+    - pg:reset DATABASE
+    - "rake db:migrate"
+    - "rake db:seed"
+    - restart
   api_key:
     secure: Jyr24Ii7Zlv+nlIXWAXp2CqH2WY8fODRV3iy3nJaFiCjVj0o3Vnpip1CSJDxIsC2lahqFI676Ow0Km37lwPC8VJOG1V/5iTYm4NGv4nC7O1GG+9NtY8HQKxHAVyAi7UffQTP0WuQkfwRk1uQxoTfUp1csmQQHJoE49NYaNvn9b93LjMvQgvXudwjE5nWcaxjeJSg/OXYyWLbYVxzI2cCUBl3V8wlexXjTCMaj0XEAWJMvwZfKWmt3s8i6tHtJwhoWlJ1/pwV4ugZ5WPkkVe2uIHUK7pHBVNUGS6g9Bqq2HKMV2DNBu/GJNjYHwWD/uwPboZUHyzlJTdMIGQqFypgDQgNfGXdFwY9G9eLAux0WodeQrs5nugKRlLWSwrpZP0UE3xvX6zuX95KP8LudafRKEqFAPG+EdCJw9160dDXl+OT8xtTYGIyqNBD6ZojBTYTWHCAo9Yn3xiTJeM73DBpQ5RT5DyzNvYVbuP+3GniXhtm6trlyH0c6fZ412INH+DBvd4RmZGhZRKZNwyIOaO4RwIA9qkUZcco437z/2qDSlfx/PzFwpHQoSbzxdBysbhsgidAnh9u1pwkKrf4eaQ/WW3I3W7RiGRpCzE2MgZiHovdJba1oPThR+BgyZJUkmdCFDJRH8/N8Pbn5x3flBJkLfNsGypHAJEComMLfo8lqM0=
