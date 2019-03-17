@@ -2,26 +2,67 @@ require 'test_helper'
 
 class UsersSignupTest < ActionDispatch::IntegrationTest
 
+    def setup
+        # clean deliveries that may be sent by other tests
+        ActionMailer::Base.deliveries.clear
+    end
+
     test "not using valid custom signup post route" do
         get signup_path
         assert_select 'form[action="/signup"]'
     end
 
-    test "valid signup information" do
+    test "valid signup information with account activation" do
         get signup_path
+
         # should create user without error
         assert_difference 'User.count' do
-            post_to_signup(name: "Test User")
+            post_to_signup(name: "Test New User")
         end
+
+        # should have one activation mail delivered
+        assert_equal 1, ActionMailer::Base.deliveries.size
+        
+        user = assigns(:user)
+        
+        # user should not be activated yet
+        assert_not user.activated?
+
+        # Try to log in before activation.
+        log_in_as(user)
+        assert_not is_logged_in?
+
+        # Invalid activation token
+        get edit_account_activation_path("invalid token", email: user.email)
+        assert_not is_logged_in?
+
+        # Valid token, wrong email
+        get edit_account_activation_path(user.activation_token, email: 'wrong')
+        assert_not is_logged_in?
+
+        # Valid activation token
+        get edit_account_activation_path(user.activation_token, email: user.email)
+        assert user.reload.activated?
         follow_redirect!
-        # # show the new user page with a flash and correct information
-        # assert_template 'users/show'
-        # assert_not flash.empty?
-        # assert_select "div.alert-success", text: "Welcome to the Sample App"
-        # assert_select "section.user_info h1 img[class=gravatar]"
-        # assert_select "section.user_info h1", text: "Test User"
-        # # assert it's logged in by default
-        # assert is_logged_in?
+
+        # show the new user page with a flash and correct information
+        assert_template 'users/show'
+        assert_not flash.empty?
+        assert_select "div.alert-success", text: "Account activated!"
+        assert_select "section.user_info h1 img[class=gravatar]"
+        assert_select "section.user_info h1", text: "Test New User"
+        assert is_logged_in?
+
+        # Cannot activate twice
+        delete logout_path
+        get edit_account_activation_path(user.activation_token, email: user.email)
+        assert user.reload.activated?
+        assert_redirected_to root_path
+        follow_redirect!
+        assert_not flash.empty?
+        assert_select "div.alert-warning", text: "Account already activated!"
+        assert_not is_logged_in?
+        
     end
 
 
