@@ -17,12 +17,22 @@ User.create!(name:  "Gan Tu",
 
 
 # create example rails user
-User.create!(name:  "Example User",
+User.create!(name:  "Example Admin User",
              email: "example@railstutorial.org",
              password:              "foobar",
              password_confirmation: "foobar",
              admin: true,
              activated: true,
+             activated_at: Time.zone.now)
+
+
+# create example rails user
+User.create!(name:  "Example Unactivated User",
+             email: "unactivated@example.org",
+             password:              "foobar",
+             password_confirmation: "foobar",
+             admin: false,
+             activated: false,
              activated_at: Time.zone.now)
 
 # create more dummy users

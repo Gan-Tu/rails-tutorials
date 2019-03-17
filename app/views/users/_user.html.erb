@@ -6,4 +6,9 @@
     | <%= link_to "delete", user, method: :delete,
                                   data: { confirm: "Do you want to delete: #{user.name.upcase}?" } %>
   <% end %>
+  <!-- We will only show unactivated users only to admins, with a message -->
+  <% if current_user.admin? && !user.activated? %>
+    <br>
+    <i> User account is not activated </i>
+  <% end %>
 </li>
