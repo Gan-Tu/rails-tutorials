@@ -47,13 +47,23 @@ class User < ApplicationRecord
         update_attribute(:remember_digest, User.digest(remember_token))
     end
 
-    # Returns true if the given token matches the remember_digest
-    # Returns false if user digest is nil (meaning no persistent login enabled)
-    def authenticated?(remember_token)
-        # built-in for checking remember_digest == digest(remember_token)
-        return !remember_digest.nil? && 
-                BCrypt::Password.new(self.remember_digest)
-                                .is_password?(remember_token)
+    # # Returns true if the given token matches the remember_digest
+    # # Returns false if user digest is nil (meaning no persistent login enabled)
+    # def authenticated?(remember_token)
+    #     # built-in for checking remember_digest == digest(remember_token)
+    #     return !remember_digest.nil? && 
+    #             BCrypt::Password.new(self.remember_digest)
+    #                             .is_password?(remember_token)
+    # end
+
+    # Returns true if the given token matches the digest.
+    # This uses Ruby's MetaProgramming, where we can call a method using
+    # 'send' and dynamically access its methods/functions/attributes
+    # Here, we enable access xxxx_digest dynamically
+    def authenticated?(attribute, token)
+        digest = send("#{attribute}_digest")
+        return false if digest.nil?
+               BCrypt::Password.new(digest).is_password?(token)
     end
 
     # Forgets a user
