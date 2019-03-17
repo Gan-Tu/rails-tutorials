@@ -10,6 +10,7 @@ class UsersController < ApplicationController
         else
             @users = User.where(activated: true).paginate(page: params[:page])
         end
+        @users = @users.order('created_at ASC')
     end
 
     def show
