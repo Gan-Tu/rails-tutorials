@@ -39,6 +39,8 @@ class PasswordResetsController < ApplicationController
     elsif @user.update_attributes(user_params)
         # case 4: A successful update
         log_in @user
+        # invalidates reset digest
+        @user.update_attribute(:reset_digest, nil)
         flash[:success] = "Password has been reset."
         redirect_to @user
     else
@@ -61,6 +63,12 @@ class PasswordResetsController < ApplicationController
     def valid_user
         unless (@user && @user.activated? &&
                 @user.authenticated?(:reset, params[:id]))
+            if @user && !@user.activated?
+                flash[:danger] = "Cannot reset password of inactive user"
+            elsif @user && !@user.authenticated?(:reset, params[:id])
+                flash[:danger] = "Invalid reset link"
+            end
+
             redirect_to root_url
         end
     end
