@@ -7,7 +7,7 @@ class UserMailerTest < ActionMailer::TestCase
     # add an activation token manually because we didn't define it in our fixtures
     user.activation_token = User.new_token
     mail = UserMailer.account_activation(user)
-    assert_equal "Account activation", mail.subject
+    assert_equal "Account activation for your account | Sample App", mail.subject
     assert_equal [user.email], mail.to
     assert_equal ["noreply@example.com"], mail.from
     assert_match user.name,               mail.body.encoded
@@ -19,7 +19,7 @@ class UserMailerTest < ActionMailer::TestCase
     user = users(:michael)
     user.reset_token = User.new_token
     mail = UserMailer.password_reset(user)
-    assert_equal "Password reset", mail.subject
+    assert_equal "Password reset for your account | Sample App", mail.subject
     assert_equal [user.email], mail.to
     assert_equal ["noreply@example.com"], mail.from
     assert_match user.reset_token,        mail.body.encoded
