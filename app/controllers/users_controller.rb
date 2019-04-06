@@ -43,7 +43,7 @@ class UsersController < ApplicationController
 
     def update
         if @user.update_attributes(safe_user_params)
-          # Handle a successful update.
+            # Handle a successful update.
             flash[:success] = "Profile updated"
             redirect_to @user
         else
