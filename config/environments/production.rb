@@ -72,11 +72,11 @@ Rails.application.configure do
   host = 'rails-tutorial-sample-app-gan.herokuapp.com'
   config.action_mailer.default_url_options = { host: host }
   ActionMailer::Base.smtp_settings = {
-    :address        => 'smtp.sendgrid.net',
+    :address        => 'smtp.mailgun.org',
     :port           => '587',
     :authentication => :plain,
-    :user_name      => 'apikey',
-    :password       => ENV['SENDGRID_API_KEY'],
+    :user_name      => ENV['MAILGUN_USERNAME'],
+    :password       => ENV['MAILGUN_API_KEY'],
     :domain         => 'heroku.com',
     :enable_starttls_auto => true
   }
