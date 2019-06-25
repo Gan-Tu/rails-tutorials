@@ -183,7 +183,7 @@ input {
 .field_with_errors {
   /* include the functionality of the Bootstrap class has-error. */
   @extend .has-error;
-  
+
   .form-control {
     color: $state-danger-text;
   }
