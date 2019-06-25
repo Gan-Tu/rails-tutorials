@@ -4,7 +4,7 @@ module SessionsHelper
     def log_in(user)
         # Because temporary cookies created using the session method are
         # automatically encrypted, the code is secure
-        # This applies only to temporary sessions initiated with the session 
+        # This applies only to temporary sessions initiated with the session
         # method, though, and is not the case for persistent sessions created
         # using the cookies method
         session[:user_id] = user.id
@@ -27,7 +27,7 @@ module SessionsHelper
             # we don't want to repeatedly fetch from database, so we save it
             # as a instance variable @current_user
             @current_user ||= User.find_by(id: user_id)
-        # or permanent sessions 
+        # or permanent sessions
         # NOTE: it's an assignment AND nil check
         elsif (user_id = cookies.signed[:user_id])
             # by accessing signed, it automatically decrypts it
@@ -38,6 +38,11 @@ module SessionsHelper
                 @current_user = user
             end
         end
+    end
+
+    # Return if the given user is the current user
+    def is_current_user?(user)
+        user == current_user
     end
 
     # Return true if the user is logged in, false otherwise
