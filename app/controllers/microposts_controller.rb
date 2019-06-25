@@ -24,7 +24,7 @@ class MicropostsController < ApplicationController
     private
 
         def micropost_params
-            params.require(:micropost).permit(:content)
+            params.require(:micropost).permit(:content, :picture)
         end
 
         def get_post_to_delete
