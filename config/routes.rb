@@ -8,7 +8,7 @@ Rails.application.routes.draw do
   # tutorial: can also rename it using 'as'
   #     For example:
   # get  '/help',    to: 'static_pages#help', as: "haha" ==> haha_path
-  
+
   get     '/help',        to: 'static_pages#help'
   get     '/about',       to: 'static_pages#about'
   get     '/contact',     to: 'static_pages#contact'
@@ -28,8 +28,8 @@ Rails.application.routes.draw do
   #           PATCH  /users/:id(.:format)                    users#update
   #           PUT    /users/:id(.:format)                    users#update
   #           DELETE /users/:id(.:format)                    users#destroy
-  
+
   resources :account_activations, only: [:edit]
   resources :password_resets,     only: [:new, :create, :edit, :update]
-
+  resources :microposts,          only: [:create, :destroy]
 end

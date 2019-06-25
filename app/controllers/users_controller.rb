@@ -61,15 +61,6 @@ class UsersController < ApplicationController
 
         ######## Before filters ########
 
-        # Confirms a logged-in user.
-        def ensure_user_logged_in
-          unless logged_in?
-            store_location
-            flash[:danger] = "Please log in."
-            redirect_to login_url
-          end
-        end
-
         # Returns true if the given user is the current user.
         def is_current_user?(user)
             user == current_user
