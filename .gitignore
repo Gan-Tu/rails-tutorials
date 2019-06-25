@@ -31,3 +31,5 @@
 # Ignore test reports
 test/reports
 
+# Ignore uploaded test images.
+/public/uploads
