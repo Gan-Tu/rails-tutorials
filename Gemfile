@@ -5,7 +5,7 @@ gem 'bcrypt',       '3.1.12'
 # normally, we will restrict "faker" to development
 # but in our case, we want to seed fake users for our sample app
 # even in production
-gem 'faker',        '1.7.3'
+gem 'faker',        '1.9.4'
 gem 'carrierwave',  '1.2.2'
 gem 'mini_magick',  '4.7.0'
 gem 'will_paginate','3.1.6'
