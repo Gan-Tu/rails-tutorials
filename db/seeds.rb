@@ -6,6 +6,10 @@
 #   movies = Movie.create([{ name: 'Star Wars' }, { name: 'Lord of the Rings' }])
 #   Character.create(name: 'Luke', movie: movies.first)
 
+# Set Random Seed
+srand(777)
+Faker::Config.random = Random.new(777)
+
 puts "[INFO] Seeding database with example users..."
 
 # create my own user
@@ -19,7 +23,7 @@ User.create!(name:  "Gan Tu",
 
 
 # create example rails user
-User.create!(name:  "Example Admin User",
+User.create!(name:  "Admin User - Example",
              email: "example@railstutorial.org",
              password:              "foobar",
              password_confirmation: "foobar",
@@ -29,7 +33,7 @@ User.create!(name:  "Example Admin User",
 
 
 # create example rails user
-User.create!(name:  "Example Unactivated User",
+User.create!(name:  "Unactivated User - Example",
              email: "unactivated@example.org",
              password:              "foobar",
              password_confirmation: "foobar",
@@ -41,7 +45,7 @@ User.create!(name:  "Example Unactivated User",
 99.times do |n|
   name  = Faker::Name.name
   email = "example-#{n+1}@railstutorial.org"
-  password = "password"
+  password = "#{name}-password"
   User.create!(name:  name,
                email: email,
                password:              password,
@@ -50,24 +54,27 @@ User.create!(name:  "Example Unactivated User",
                activated_at: Time.zone.now)
 end
 
-puts "[INFO] Seeding database with example posts..."
-
 # Fake microposts
-users = User.order(:created_at).take(6)
-50.times do
-  content = Faker::Lorem.sentence(5)
-  users.each { |user| user.microposts.create!(content: content) }
-end
-
-puts "[INFO] Seeding database with example relationships..."
+puts "[INFO] Seeding database with example posts..."
+User.all.each { |user|
+  num_posts = rand(1..30)
+  num_posts.times {
+    content = Faker::Lorem.sentence(5)
+    post = user.microposts.create(content: content)
+    post.created_at = rand(1..60*24).minutes.ago
+    post.save
+  }
+}
 
 # Following relationships
-user  = users.first
-User.all[2..50].each { |followed|
-  user.follow(followed)
+puts "[INFO] Seeding database with example relationships..."
+all_users = User.all[0..50]
+all_users.each { |user|
+  num_follow = rand(1..all_users.length)
+  all_users.shuffle[0..num_follow].each{ |other|
+    if user != other
+      user.follow(other)
+    end
+  }
 }
-User.all[3..40].each { |follower|
-  follower.follow(user)
-}
-
 
