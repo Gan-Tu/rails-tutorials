@@ -1,13 +1,32 @@
 class User < ApplicationRecord
 
+    ##########################################################
+    #                  DATABASE RELATIONSHIPS                #
+    ##########################################################
+
+    # a user has many microposts
     has_many :microposts, dependent: :destroy
+
+    # a user can follow other users
     has_many :active_relationships, class_name:  "Relationship",
                                     foreign_key: "follower_id",
                                     dependent:   :destroy
+    has_many :following, through: :active_relationships,
+                         source: :followed
 
+    # a user is followed by other users
+    has_many :passive_relationships, class_name:  "Relationship",
+                                     foreign_key: "followed_id",
+                                     dependent:   :destroy
+    has_many :followers, through: :passive_relationships,
+                         source: :follower
+
+    ##########################################################
+    #                       ATTRIBUTES                       #
+    ##########################################################
+
+    # attributes
     attr_accessor :remember_token, :activation_token, :reset_token
-    before_save   :downcase_email
-    before_create :create_activation_digest
 
     # equivalent: validates(:name, presence: true)
     validates :name,    presence: true,
@@ -21,6 +40,18 @@ class User < ApplicationRecord
                         # it will be case sensitive, while it shouldn't be for email
                         uniqueness: { case_sensitive: false }
 
+    validates :password, presence: true, # ensures non-empty
+                         length: { minimum: 6 },
+                         allow_nil: true
+
+    ##########################################################
+    #                     AUTHENTICATION                     #
+    ##########################################################
+
+    # actions
+    before_save   :downcase_email
+    before_create :create_activation_digest
+
     # for more: https://goo.gl/wLvfto
     # - automatically add 'password_confirmation', 'authenticate' method
     # - Adds methods to set and authenticate against a BCrypt password. T
@@ -29,10 +60,6 @@ class User < ApplicationRecord
     # password (using a password_confirmation attribute) are
     # automatically added.
     has_secure_password
-
-    validates :password, presence: true, # ensures non-empty
-                         length: { minimum: 6 },
-                         allow_nil: true
 
     # Return the hash digest of the given string
     def User.digest(string)
@@ -52,15 +79,6 @@ class User < ApplicationRecord
         update_attribute(:remember_digest, User.digest(remember_token))
     end
 
-    # # Returns true if the given token matches the remember_digest
-    # # Returns false if user digest is nil (meaning no persistent login enabled)
-    # def authenticated?(remember_token)
-    #     # built-in for checking remember_digest == digest(remember_token)
-    #     return !remember_digest.nil? &&
-    #             BCrypt::Password.new(self.remember_digest)
-    #                             .is_password?(remember_token)
-    # end
-
     # Returns true if the given token matches the digest.
     # This uses Ruby's MetaProgramming, where we can call a method using
     # 'send' and dynamically access its methods/functions/attributes
@@ -76,6 +94,10 @@ class User < ApplicationRecord
         self.remember_token = nil
         update_attribute(:remember_digest, nil)
     end
+
+    ##########################################################
+    #                 ACTIVATION  & RESET                    #
+    ##########################################################
 
     # Activate an account
     def activate
@@ -107,11 +129,39 @@ class User < ApplicationRecord
         self.reset_sent_at < 2.hours.ago
     end
 
+    ##########################################################
+    #                          FEEDING                       #
+    ##########################################################
+
     # Defines a proto-feed.
     def feed
         Micropost.where("user_id = ?", id)
     end
 
+    # Follows a user.
+    def follow(other_user)
+        following << other_user
+    end
+
+    # Unfollows a user.
+    def unfollow(other_user)
+        following.delete(other_user)
+    end
+
+    # Returns true if the current user is following the other user.
+    def following?(other_user)
+        following.include?(other_user)
+    end
+
+    # Returns true if the current user has the other user as a follower
+    def followed_by?(other_user)
+        followers.include?(other_user)
+    end
+
+
+    ##########################################################
+    #                    PRIVATE UTILITIES                   #
+    ##########################################################
 
     private
 
