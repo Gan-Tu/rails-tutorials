@@ -6,6 +6,8 @@
 #   movies = Movie.create([{ name: 'Star Wars' }, { name: 'Lord of the Rings' }])
 #   Character.create(name: 'Luke', movie: movies.first)
 
+puts "[INFO] Seeding database with example users..."
+
 # create my own user
 User.create!(name:  "Gan Tu",
              email: "example@tugan.me",
@@ -48,11 +50,24 @@ User.create!(name:  "Example Unactivated User",
                activated_at: Time.zone.now)
 end
 
+puts "[INFO] Seeding database with example posts..."
+
 # Fake microposts
 users = User.order(:created_at).take(6)
 50.times do
   content = Faker::Lorem.sentence(5)
   users.each { |user| user.microposts.create!(content: content) }
 end
+
+puts "[INFO] Seeding database with example relationships..."
+
+# Following relationships
+user  = users.first
+User.all[2..50].each { |followed|
+  user.follow(followed)
+}
+User.all[3..40].each { |follower|
+  follower.follow(user)
+}
 
 
