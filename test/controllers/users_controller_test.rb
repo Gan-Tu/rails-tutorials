@@ -10,7 +10,7 @@ class UsersControllerTest < ActionDispatch::IntegrationTest
     test "should get new" do
         get signup_path
         assert_response :success
-    end 
+    end
 
     test "should redirect edit when not logged in" do
         get edit_user_path(@user)
@@ -93,6 +93,16 @@ class UsersControllerTest < ActionDispatch::IntegrationTest
             delete user_path(@user)
         end
         assert_redirected_to root_url
+    end
+
+    test "should redirect following when not logged in" do
+        get following_user_path(@user)
+        assert_redirected_to login_url
+    end
+
+    test "should redirect followers when not logged in" do
+        get followers_user_path(@user)
+        assert_redirected_to login_url
     end
 
 end
