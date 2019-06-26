@@ -98,24 +98,24 @@ class UserTest < ActiveSupport::TestCase
 
     test "should follow and unfollow a user" do
         michael = users(:michael)
-        archer  = users(:archer)
+        user_nofollow  = users(:user_nofollow)
 
-        assert_not michael.following?(archer)
-        assert_not archer.following?(michael)
-        assert_not michael.followed_by?(archer)
-        assert_not archer.followed_by?(michael)
+        assert_not michael.following?(user_nofollow)
+        assert_not user_nofollow.following?(michael)
+        assert_not michael.followed_by?(user_nofollow)
+        assert_not user_nofollow.followed_by?(michael)
 
-        michael.follow(archer)
-        assert     michael.following?(archer)
-        assert_not archer.following?(michael)
-        assert_not michael.followed_by?(archer)
-        assert     archer.followed_by?(michael)
+        michael.follow(user_nofollow)
+        assert     michael.following?(user_nofollow)
+        assert_not user_nofollow.following?(michael)
+        assert_not michael.followed_by?(user_nofollow)
+        assert     user_nofollow.followed_by?(michael)
 
-        michael.unfollow(archer)
-        assert_not michael.following?(archer)
-        assert_not archer.following?(michael)
-        assert_not michael.followed_by?(archer)
-        assert_not archer.followed_by?(michael)
+        michael.unfollow(user_nofollow)
+        assert_not michael.following?(user_nofollow)
+        assert_not user_nofollow.following?(michael)
+        assert_not michael.followed_by?(user_nofollow)
+        assert_not user_nofollow.followed_by?(michael)
     end
 
 end

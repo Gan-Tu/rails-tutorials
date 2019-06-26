@@ -1,6 +1,6 @@
 # Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
 
-# Having created a fixture with a valid user, we can retrieve 
+# Having created a fixture with a valid user, we can retrieve
 # it inside a test as follows:  user = users(:michael)
 michael:
   name: Michael Example
@@ -27,6 +27,13 @@ lana:
 malory:
   name: Malory Archer
   email: boss@example.gov
+  password_digest: <%= User.digest('password') %>
+  activated: true
+  activated_at: <%= Time.zone.now %>
+
+user_nofollow:
+  name: No Friends User
+  email: user_nofollow@example.com
   password_digest: <%= User.digest('password') %>
   activated: true
   activated_at: <%= Time.zone.now %>
