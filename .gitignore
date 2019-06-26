@@ -33,3 +33,6 @@ test/reports
 
 # Ignore uploaded test images.
 /public/uploads
+
+# Ignore environment file
+.env
