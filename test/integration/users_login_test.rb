@@ -6,7 +6,7 @@ class UsersLoginTest < ActionDispatch::IntegrationTest
         @user = users(:michael)
     end
 
-    test "login with invalid information" do 
+    test "login with invalid information" do
         get login_path
         assert_template 'sessions/new'
         # should have non-logged-in user links
@@ -29,26 +29,26 @@ class UsersLoginTest < ActionDispatch::IntegrationTest
         assert_template 'sessions/new'
         # should have non-logged-in user links
         assert_is_nonlogin_user_links
-        
+
         # log in with valid information
-        post login_path, params: { session: {   email: @user.email, 
+        post login_path, params: { session: {   email: @user.email,
                                                 password: "password" }}
         # should NOT appear error message before redirect
         assert flash.empty?
-        
-        # should redirect to user's show page
-        assert_redirected_to @user
+
+        # should redirect to user's home page
+        assert_redirected_to root_url
         follow_redirect!
-        assert_template 'users/show'
+
         # should NOT appear error message on show page
         assert flash.empty?
         # should have logged-in user links
         assert_is_login_user_links
         assert is_logged_in?
-        
+
         # then, log out!
         delete logout_path
-        assert_not is_logged_in? 
+        assert_not is_logged_in?
 
         # redirect
         assert_redirected_to root_path
