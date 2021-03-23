@@ -1,6 +1,6 @@
 # Ruby on Rails Tutorial sample application
 
-[![Build Status](https://travis-ci.com/Michael-Tu/rails-tutorials.svg?branch=master)](https://travis-ci.com/Michael-Tu/rails-tutorials)
+[![Build Status](https://travis-ci.com/Gan-Tu/rails-tutorials.svg?branch=master)](https://travis-ci.com/Gan-Tu/rails-tutorials)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
 
