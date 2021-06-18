@@ -6,7 +6,7 @@ gem 'bcrypt',       '3.1.12'
 # but in our case, we want to seed fake users for our sample app
 # even in production
 gem 'faker',        '1.9.4'
-gem 'carrierwave',  '1.2.2'
+gem 'carrierwave',  '1.3.2'
 gem 'mini_magick',  '4.7.0'
 gem 'will_paginate','3.1.6'
 gem 'bootstrap-will_paginate', '1.0.0'
